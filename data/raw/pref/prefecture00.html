@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>気象庁｜過去の気象データ検索</title>
+<meta name="Author" content="気象庁 Japan Meteorological Agency" />
+<meta name="keywords" content="気象庁 Japan Meteorological Agency" />
+<meta name="description" content="気象庁｜過去の気象データ検索" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<link rel="stylesheet" type="text/css" href="/com/css/define.css" media="all" />
+<link rel="stylesheet" type="text/css" href="../../css/default.css" media="all" />
+<script type="text/javascript" src="/com/js/jquery.js"></script>
+<style type="text/css" media="all"><!-- @import url(/com/default.css); --></style>
+</head>
+
+
+<body>
+<noscript><div>すべての機能をご利用いただくにはJavascriptを有効にしてください。</div></noscript>
+<!--header start -->
+<div id="header_area">
+  <div id="nheader">
+    <div id="logo"><a href="//www.jma.go.jp/jma/index.html"><img src="/jma/com/images/logo.gif" alt="気象庁" width="120" height="67" /></a></div>
+    <div id="header2_right">
+      <div id="header2_link">
+        <ul>
+          <li xml:lang="en" lang="en"><a href="//www.jma.go.jp/jma/kokusai/multi.html">Other Languages</a></li>
+        </ul>
+      </div>
+      <div id="header2_link">
+        <ul>
+          <li xml:lang="en" lang="en"><a href="//www.jma.go.jp/jma/indexe.html">ENGLISH</a></li>
+        </ul>
+      </div>
+<!-- search -->
+      <div id="gsearch">
+        <form id="cse-search-box" action="//google.com/cse">
+          <input type="hidden" name="cx" value="009950868052057056798:0yrbmp7chwi">
+          <input type="hidden" name="ie" value="UTF-8">
+          <input type="text" name="q">
+          <input type="image" name="sa" src="/jma/com/images/btn_search6.png" alt="検索">
+        </form>
+        <script type="text/javascript" src="//www.google.com/cse/brand?form=cse-search-box&lang=ja"></script>
+      </div>
+<!-- search end-->
+    </div>
+    <ul id="gnavi">
+      <li><a href="//www.jma.go.jp/">ホーム</a></li>
+      <li><a href="//www.jma.go.jp/jma/menu/menuflash.html">防災情報</a></li>
+      <li><a href="//www.jma.go.jp/jma/menu/menureport.html" class="on">各種データ・資料</a></li>
+      <li><a href="//www.jma.go.jp/jma/menu/areas.html">地域の情報</a></li>
+      <li><a href="//www.jma.go.jp/jma/menu/menuknowledge.html">知識・解説</a></li>
+      <li><a href="//www.jma.go.jp/jma/menu/menuappli.html">各種申請・ご案内</a></li>
+    </ul>
+  </div>
+</div>
+<!--header end -->
+
+
+<div id="contents_area2">
+<div id="ncontents2">
+<!-- pankuzu menu -->
+<ul class="breadcrumb2">
+<li><a href="//www.jma.go.jp/">ホーム</a>&nbsp;&gt;&nbsp;</li>
+<li><a href="//www.jma.go.jp/jma/menu/menureport.html">各種データ・資料</a>&nbsp;&gt;&nbsp;</li>
+  <li><a href="../index.php?prec_no=&block_no=&year=&month=&day=&view=">過去の気象データ検索</a>&nbsp;&gt;&nbsp;</li>
+<li>都府県・地方の選択</li>
+</ul>
+<!-- //pankuzu menu -->
+
+
+<div id="main">
+<!-- contents -->
+<h1>都府県・地方の選択</h1>
+
+<img src="../../data/image/map/map00.png" alt="都府県・地方選択用日本地図" usemap="#point" border="0">
+<map name="point">
+<area shape="rect" alt="宗谷地方" coords="708,21,745,36" href="prefecture.php?prec_no=11&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="上川地方" coords="699,68,736,83" href="prefecture.php?prec_no=12&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="留萌地方" coords="676,47,713,62" href="prefecture.php?prec_no=13&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="石狩地方" coords="648,103,685,118" href="prefecture.php?prec_no=14&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="空知地方" coords="675,86,712,101" href="prefecture.php?prec_no=15&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="後志地方" coords="612,90,649,105" href="prefecture.php?prec_no=16&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="網走・北見・紋別地方" coords="736,96,849,111" href="prefecture.php?prec_no=17&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="根室地方" coords="796,131,833,146" href="prefecture.php?prec_no=18&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="釧路地方" coords="753,150,790,165" href="prefecture.php?prec_no=19&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="十勝地方" coords="712,130,749,145" href="prefecture.php?prec_no=20&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="胆振地方" coords="647,124,684,139" href="prefecture.php?prec_no=21&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="日高地方" coords="675,151,712,166" href="prefecture.php?prec_no=22&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="渡島地方" coords="618,143,655,158" href="prefecture.php?prec_no=23&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="檜山地方" coords="577,124,614,139" href="prefecture.php?prec_no=24&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="青森県" coords="606,190,643,205" href="prefecture.php?prec_no=31&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="秋田県" coords="559,221,596,236" href="prefecture.php?prec_no=32&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="岩手県" coords="606,249,643,264" href="prefecture.php?prec_no=33&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="宮城県" coords="586,295,623,310" href="prefecture.php?prec_no=34&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="山形県" coords="533,266,570,281" href="prefecture.php?prec_no=35&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="福島県" coords="548,318,585,333" href="prefecture.php?prec_no=36&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="茨城県" coords="533,371,570,386" href="prefecture.php?prec_no=40&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="栃木県" coords="514,336,551,351" href="prefecture.php?prec_no=41&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="群馬県" coords="471,333,508,348" href="prefecture.php?prec_no=42&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="埼玉県" coords="485,357,522,372" href="prefecture.php?prec_no=43&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="東京都" coords="483,377,520,392" href="prefecture.php?prec_no=44&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="千葉県" coords="531,398,568,413" href="prefecture.php?prec_no=45&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="神奈川県" coords="460,397,512,412" href="prefecture.php?prec_no=46&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="長野県" coords="429,337,466,352" href="prefecture.php?prec_no=48&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="山梨県" coords="442,365,479,380" href="prefecture.php?prec_no=49&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="静岡県" coords="420,390,457,405" href="prefecture.php?prec_no=50&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="愛知県" coords="382,369,419,384" href="prefecture.php?prec_no=51&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="岐阜県" coords="387,331,424,346" href="prefecture.php?prec_no=52&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="三重県" coords="352,396,389,411" href="prefecture.php?prec_no=53&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="新潟県" coords="490,285,527,300" href="prefecture.php?prec_no=54&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="富山県" coords="418,307,455,322" href="prefecture.php?prec_no=55&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="石川県" coords="381,281,418,296" href="prefecture.php?prec_no=56&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="福井県" coords="360,307,397,322" href="prefecture.php?prec_no=57&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="滋賀県" coords="353,350,390,365" href="prefecture.php?prec_no=60&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="京都府" coords="328,330,365,345" href="prefecture.php?prec_no=61&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="大阪府" coords="309,357,346,372" href="prefecture.php?prec_no=62&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="兵庫県" coords="288,332,325,347" href="prefecture.php?prec_no=63&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="奈良県" coords="318,379,355,394" href="prefecture.php?prec_no=64&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="和歌山県" coords="271,400,323,415" href="prefecture.php?prec_no=65&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="岡山県" coords="247,322,284,337" href="prefecture.php?prec_no=66&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="広島県" coords="202,317,239,332" href="prefecture.php?prec_no=67&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="島根県" coords="201,291,238,306" href="prefecture.php?prec_no=68&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="鳥取県" coords="269,296,306,311" href="prefecture.php?prec_no=69&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="徳島県" coords="263,374,300,389" href="prefecture.php?prec_no=71&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="香川県" coords="247,347,284,362" href="prefecture.php?prec_no=72&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="愛媛県" coords="191,353,228,368" href="prefecture.php?prec_no=73&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="高知県" coords="218,375,255,390" href="prefecture.php?prec_no=74&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="山口県" coords="152,311,189,326" href="prefecture.php?prec_no=81&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="福岡県" coords="116,325,153,340" href="prefecture.php?prec_no=82&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="大分県" coords="138,352,175,367" href="prefecture.php?prec_no=83&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="長崎県" coords="56,349,93,364" href="prefecture.php?prec_no=84&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="佐賀県" coords="69,319,106,334" href="prefecture.php?prec_no=85&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="熊本県" coords="95,366,132,381" href="prefecture.php?prec_no=86&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="宮崎県" coords="115,393,152,408" href="prefecture.php?prec_no=87&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="鹿児島県" coords="48,401,100,416" href="prefecture.php?prec_no=88&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="沖縄県" coords="265,139,302,154" href="prefecture.php?prec_no=91&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="南極" coords="764,344,801,359" href="prefecture.php?prec_no=99&block_no=&year=&month=&day=&view=">
+</map>
+</div>
+<br>
+<ul class="pagelink mtx">
+  <li><A href="../../data/mdrr/man/first.html">利用される方へ</A></li>
+  </ul>
+<br>
+
+
+<!-- //contents -->
+
+<p class="totop"><a href="#nheader">このページのトップへ</a></p>
+</div>
+</div>
+
+<div id="footer_area"><div id="nfooter"><ul><li><a href="//www.jma.go.jp/jma/kishou/info/coment.html">気象庁ホームページについて</a></li></ul></div></div></body>
+</html>

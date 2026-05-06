@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>気象庁｜過去の気象データ検索</title>
+<meta name="Author" content="気象庁 Japan Meteorological Agency" />
+<meta name="keywords" content="気象庁 Japan Meteorological Agency" />
+<meta name="description" content="気象庁｜過去の気象データ検索" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<link rel="stylesheet" type="text/css" href="/com/css/define.css" media="all" />
+<link rel="stylesheet" type="text/css" href="../../css/default.css" media="all" />
+<script type="text/javascript" src="/com/js/jquery.js"></script>
+<script type="text/javascript">
+  function viewPoint(as, bk_no, ch, ch_kn, lat_d, lat_m, lon_d, lon_m, height, f_pre, f_wsp, f_tem, f_sun, f_snc, f_hum, ed_y, ed_m, ed_d, bikou1, bikou2, bikou3, bikou4, bikou5){
+    if(bk_no == 47646 || bk_no == 47690 || bk_no == 47945){
+      ch = ch + "※";
+      ch_kn = ch_kn + "※";
+    }
+    if(bk_no == 47401) {ch_kn = 'ワッカナイ';}
+    if(bk_no == 47412) {ch_kn = 'サッポロ';}
+    if(bk_no == 47421) {ch_kn = 'スッツ';}
+    if(bk_no == 47433) {ch_kn = 'クッチャン';}
+    if(bk_no == 47520) {ch_kn = 'シンジョウ';}
+    if(bk_no == 47648) {ch_kn = 'チョウシ';}
+    if(bk_no == 47662) {ch_kn = 'トウキョウ';}
+    if(bk_no == 47678) {ch_kn = 'ハチジョウジマ';}
+    if(bk_no == 47684) {ch_kn = 'ヨッカイチ';}
+    if(bk_no == 47746) {ch_kn = 'トットリ';}
+    if(bk_no == 47759) {ch_kn = 'キョウト';}
+    if(bk_no == 47829) {ch_kn = 'ミヤコノジョウ';}
+    document.all('point_ch').firstChild.nodeValue=ch;
+    document.all('point_ch_kn').firstChild.nodeValue=ch_kn;
+    if((lat_d-0) < 0){
+      document.all('point_lat').firstChild.nodeValue='南緯'+Math.abs(lat_d-0)+'度'+lat_m+'分';
+    }else{
+      document.all('point_lat').firstChild.nodeValue='北緯'+lat_d+'度'+lat_m+'分';
+    }
+    document.all('point_lon').firstChild.nodeValue='東経'+(lon_d-0)+'度'+lon_m+'分';
+
+    if(height == 0){
+      document.all('point_height').firstChild.nodeValue='0ｍ';
+    }else{
+      document.all('point_height').firstChild.nodeValue=height+'m　';
+    }
+
+    if(as == 'a'){
+      document.all('point_style').firstChild.nodeValue='アメダス';
+    }
+    if(as == 's'){
+      document.all('point_style').firstChild.nodeValue='気象台、測候所など';
+    }
+    if(f_pre == '1' || as == 's') document.all('ob_rain').src = "../../data/image/obs/ob_rain.gif"
+    if(f_wsp == '1' || as == 's') document.all('ob_wind').src = "../../data/image/obs/ob_wind.gif"
+    if(f_tem == '1' || as == 's') document.all('ob_tmeter').src = "../../data/image/obs/ob_tmeter.gif"
+    if(f_sun == '1' || f_sun == '2' || f_sun == '3' || as == 's') document.all('ob_sun').src = "../../data/image/obs/ob_sun.gif"
+    if(f_snc == '1') document.all('ob_snow').src = "../../data/image/obs/ob_snow.gif"
+    if(f_hum == '1' || as == 's') document.all('ob_hum').src = "../../data/image/obs/ob_hum.gif"
+    //if(f_hum == '1' || as == 's') document.all('ob_hum').src = "../../image/obs/ob_hum.gif"
+    if(ed_y != '9999'){
+      document.all('point_ed_dt').firstChild.nodeValue=ed_y+'年'+ed_m+'月'+ed_d+'日まで観測';
+    }
+    if(bk_no == 47646 || bk_no == 47690 || bk_no == 47945){
+      document.all('notation_b').firstChild.nodeValue='※地点、カナの（ ）内は気象台・測候所などの名称です。';
+    }else{
+      document.all('notation_b').firstChild.nodeValue='　';
+    }
+
+    if(bikou1 != ""){
+      document.all('point_bikou1').firstChild.nodeValue=bikou1;
+    }else{
+      document.all('point_bikou1').firstChild.nodeValue='　';
+    }
+    if(bikou2 != ""){
+      document.all('point_bikou2').firstChild.nodeValue=bikou2;
+    }else{
+      document.all('point_bikou2').firstChild.nodeValue='　';
+    }
+    if(bikou3 != ""){
+      document.all('point_bikou3').firstChild.nodeValue=bikou3;
+    }else{
+      document.all('point_bikou3').firstChild.nodeValue='　';
+    }
+    if(bikou4 != ""){
+      document.all('point_bikou4').firstChild.nodeValue=bikou4;
+    }else{
+      document.all('point_bikou4').firstChild.nodeValue='　';
+    }
+    if(bikou5 != ""){
+      document.all('point_bikou5').firstChild.nodeValue=bikou5;
+    }else{
+      document.all('point_bikou5').firstChild.nodeValue='　';
+    }
+  }
+  function initPoint(){
+    document.all('point_ch').firstChild.nodeValue="　";
+    document.all('point_ch_kn').firstChild.nodeValue="　";
+    document.all('point_lat').firstChild.nodeValue="　";
+    document.all('point_lon').firstChild.nodeValue="　";
+    document.all('point_height').firstChild.nodeValue="　";
+    document.all('point_style').firstChild.nodeValue="　";
+    document.all('ob_rain').src = "../../data/image/obs/ob_null.gif"
+    document.all('ob_wind').src = "../../data/image/obs/ob_null.gif"
+    document.all('ob_tmeter').src = "../../data/image/obs/ob_null.gif"
+    document.all('ob_sun').src = "../../data/image/obs/ob_null.gif"
+    document.all('ob_snow').src = "../../data/image/obs/ob_null.gif"
+    document.all('ob_hum').src = "../../data/image/obs/ob_null.gif"
+    document.all('point_ed_dt').firstChild.nodeValue="　";
+    document.all('notation_b').firstChild.nodeValue="　";
+    document.all('point_bikou1').firstChild.nodeValue="　";
+    document.all('point_bikou2').firstChild.nodeValue="　";
+    document.all('point_bikou3').firstChild.nodeValue="　";
+    document.all('point_bikou4').firstChild.nodeValue="　";
+    document.all('point_bikou5').firstChild.nodeValue="　";
+  }
+</script>
+<style type="text/css" media="all"><!-- @import url(/com/default.css); --></style>
+<style type="text/css">
+   td{ height:12px }
+</style>
+</head>
+
+<body>
+<noscript><div>すべての機能をご利用いただくにはJavascriptを有効にしてください。</div></noscript>
+<!--header start -->
+<div id="header_area">
+  <div id="nheader">
+    <div id="logo"><a href="//www.jma.go.jp/jma/index.html"><img src="/jma/com/images/logo.gif" alt="気象庁" width="120" height="67" /></a></div>
+    <div id="header2_right">
+      <div id="header2_link">
+        <ul>
+          <li xml:lang="en" lang="en"><a href="//www.jma.go.jp/jma/kokusai/multi.html">Other Languages</a></li>
+        </ul>
+      </div>
+      <div id="header2_link">
+        <ul>
+          <li xml:lang="en" lang="en"><a href="//www.jma.go.jp/jma/indexe.html">ENGLISH</a></li>
+        </ul>
+      </div>
+<!-- search -->
+      <div id="gsearch">
+        <form id="cse-search-box" action="//google.com/cse">
+          <input type="hidden" name="cx" value="009950868052057056798:0yrbmp7chwi">
+          <input type="hidden" name="ie" value="UTF-8">
+          <input type="text" name="q">
+          <input type="image" name="sa" src="/jma/com/images/btn_search6.png" alt="検索">
+        </form>
+        <script type="text/javascript" src="//www.google.com/cse/brand?form=cse-search-box&lang=ja"></script>
+      </div>
+<!-- search end-->
+    </div>
+    <ul id="gnavi">
+      <li><a href="//www.jma.go.jp/">ホーム</a></li>
+      <li><a href="//www.jma.go.jp/jma/menu/menuflash.html">防災情報</a></li>
+      <li><a href="//www.jma.go.jp/jma/menu/menureport.html" class="on">各種データ・資料</a></li>
+      <li><a href="//www.jma.go.jp/jma/menu/areas.html">地域の情報</a></li>
+      <li><a href="//www.jma.go.jp/jma/menu/menuknowledge.html">知識・解説</a></li>
+      <li><a href="//www.jma.go.jp/jma/menu/menuappli.html">各種申請・ご案内</a></li>
+    </ul>
+  </div>
+</div>
+<!--header end -->
+
+<div id="contents_area2">
+  <div id="ncontents2">
+<!-- pankuzu menu -->
+  <ul class="breadcrumb2">
+  <li><a href="//www.jma.go.jp/">ホーム</a>&nbsp;&gt;&nbsp;</li>
+  <li><a href="//www.jma.go.jp/jma/menu/menureport.html">各種データ・資料</a>&nbsp;&gt;&nbsp;</li>
+  <li><a href="../index.php?prec_no=33&block_no=&year=&month=&day=&view=">過去の気象データ検索</a>&nbsp;&gt;&nbsp;</li>  <li><a href="prefecture00.php?prec_no=33&block_no=&year=&month=&day=&view=">都府県・地方の選択</a>&nbsp;&gt;&nbsp;</li>
+  <li>地点の選択</li>
+  </ul>
+<!-- //pankuzu menu -->
+
+<div id="main">
+<!-- contents -->
+
+<!-- contents -->
+<h1>地点の選択</h1>
+
+<div>
+<table>
+<tr><td style="vertical-align:top">
+<img src="../../data/image/map/map33.png" alt="地点選択用岩手県地図" usemap="#point" border="0"></td><td style="vertical-align:top">
+<table>
+<!--2013.3.23全角がないとmacintoshのsafariで行間が小さくなるので、必ず全角文字か全角スペースを入れること。-->
+<tr><td class="nwtop" colspan="2" style="font-weight:bold; text-align:left">　　　　岩手県</td></tr>
+<tr><td class="nwtop" style="font-weight:bold;width:3em">地点&nbsp;&nbsp;</td><td class="nwtop"><div id="point_ch">　</div></td></tr>
+<tr><td class="nwtop" style="font-weight:bold;width:3em">カナ&nbsp;&nbsp;</td><td class="nwtop"><div id="point_ch_kn">　</div></td></tr>
+<tr><td class="nwtop" style="font-weight:bold;width:3em">緯度&nbsp;&nbsp;</td><td class="nwtop"><div id="point_lat">　</div></td></tr>
+<tr><td class="nwtop" style="font-weight:bold;width:3em">経度&nbsp;&nbsp;</td><td class="nwtop"><div id="point_lon">　</div></td></tr>
+<tr><td class="nwtop" style="font-weight:bold;width:3em">標高&nbsp;&nbsp;</td><td class="nwtop"><div id="point_height">　</div></td></tr>
+<tr><td class="nwtop" style="font-weight:bold;width:3em">区分&nbsp;&nbsp;</td><td class="nwtop"><div id="point_style">　</div></td></tr>
+<tr><td class="nwtop" style="font-weight:bold;width:3em">観測&nbsp;&nbsp;</td>
+<td class="nwtop">
+<img src="../../data/image/obs/ob_null.gif" id="ob_rain" alt="">
+<img src="../../data/image/obs/ob_null.gif" id="ob_tmeter" alt="">
+<img src="../../data/image/obs/ob_null.gif" id="ob_hum" alt="">
+<img src="../../data/image/obs/ob_null.gif" id="ob_wind" alt="">
+<img src="../../data/image/obs/ob_null.gif" id="ob_sun" alt="">
+<img src="../../data/image/obs/ob_null.gif" id="ob_snow" alt="">
+</td></tr>
+<!--2013.3.23全角がないとmacintoshのsafariで行間が小さくなるので、必ず全角文字か全角スペースを入れること。-->
+<tr><td colspan='2'><div id="point_ed_dt">　</div></td></tr>
+<tr><td class="nwtop" style="font-weight:bold;width:3em">　</td><td class="nwtop"><div id="notation_b">　</div></td></tr>
+<tr><td class="nwtop" style="font-weight:bold;width:3em">備考</td><td class="nwtop"><div id="point_bikou1">　</div></td></tr>
+<tr><td class="nwtop" style="font-weight:bold;width:3em">　</td><td class="nwtop"><div id="point_bikou2">　</div></td></tr>
+<tr><td class="nwtop" style="font-weight:bold;width:3em">　</td><td class="nwtop"><div id="point_bikou3">　</div></td></tr>
+<tr><td class="nwtop" style="font-weight:bold;width:3em">　</td><td class="nwtop"><div id="point_bikou4">　</div></td></tr>
+<tr><td class="nwtop" style="font-weight:bold;width:3em">　</td><td class="nwtop"><div id="point_bikou5">　</div></td></tr>
+</table>
+</td></tr>
+</table>
+</div>
+</div>
+<map name="point"><area shape="rect" alt="種市" coords="265,43,294,55" href="../index.php?prec_no=33&block_no=0205&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0205','種市','タネイチ','40','24.2','141','42.0','70','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="種市" coords="257,46,264,53" href="../index.php?prec_no=33&block_no=0205&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0205','種市','タネイチ','40','24.2','141','42.0','70','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="軽米" coords="219,64,248,76" href="../index.php?prec_no=33&block_no=0206&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0206','軽米','カルマイ','40','19.5','141','28.0','148','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="軽米" coords="210,66,217,73" href="../index.php?prec_no=33&block_no=0206&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0206','軽米','カルマイ','40','19.5','141','28.0','148','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="二戸" coords="156,82,185,94" href="../index.php?prec_no=33&block_no=0207&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0207','二戸','ニノヘ','40','17.9','141','17.9','87','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="二戸" coords="177,72,184,79" href="../index.php?prec_no=33&block_no=0207&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0207','二戸','ニノヘ','40','17.9','141','17.9','87','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="折爪岳" coords="200,79,244,91" href="../index.php?prec_no=33&block_no=0208&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0208','折爪岳','オリヅメダケ','40','15.8','141','22.5','844','1','0','0','0','0','0','2009','11','02','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="折爪岳" coords="192,81,199,88" href="../index.php?prec_no=33&block_no=0208&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0208','折爪岳','オリヅメダケ','40','15.8','141','22.5','844','1','0','0','0','0','0','2009','11','02','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="久慈" coords="276,103,305,115" href="../index.php?prec_no=33&block_no=0209&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0209','久慈','クジ','40','10.1','141','44.9','13','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="久慈" coords="267,105,274,112" href="../index.php?prec_no=33&block_no=0209&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0209','久慈','クジ','40','10.1','141','44.9','13','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="西岳" coords="152,111,183,123" href="../index.php?prec_no=33&block_no=0210&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0210','西岳','ニシダケ','40','05.0','141','10.4','1008','1','0','0','0','0','0','2009','11','02','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="西岳" coords="152,126,159,133" href="../index.php?prec_no=33&block_no=0210&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0210','西岳','ニシダケ','40','05.0','141','10.4','1008','1','0','0','0','0','0','2009','11','02','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="葛巻" coords="201,124,230,136" href="../index.php?prec_no=33&block_no=0211&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0211','葛巻','クズマキ','40','02.4','141','27.4','418','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="葛巻" coords="208,137,215,144" href="../index.php?prec_no=33&block_no=0211&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0211','葛巻','クズマキ','40','02.4','141','27.4','418','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="袖山" coords="228,145,259,157" href="../index.php?prec_no=33&block_no=0212&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0212','袖山','ソデヤマ','40','01.5','141','31.5','1144','1','0','0','0','0','0','2009','11','02','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="袖山" coords="222,141,229,148" href="../index.php?prec_no=33&block_no=0212&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0212','袖山','ソデヤマ','40','01.5','141','31.5','1144','1','0','0','0','0','0','2009','11','02','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="茶臼岳" coords="52,158,96,170" href="../index.php?prec_no=33&block_no=0213&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0213','茶臼岳','チャウスダケ','39','56.7','140','54.3','1443','1','0','0','0','0','0','2009','11','02','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="茶臼岳" coords="98,161,105,168" href="../index.php?prec_no=33&block_no=0213&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0213','茶臼岳','チャウスダケ','39','56.7','140','54.3','1443','1','0','0','0','0','0','2009','11','02','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="岩手松尾" coords="90,143,143,155" href="../index.php?prec_no=33&block_no=0214&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0214','岩手松尾','イワテマツオ','39','57.1','141','03.9','275','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="岩手松尾" coords="130,159,137,166" href="../index.php?prec_no=33&block_no=0214&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0214','岩手松尾','イワテマツオ','39','57.1','141','03.9','275','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="岩手山" coords="95,174,139,186" href="../index.php?prec_no=33&block_no=0215&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0215','岩手山','イワテヤマ','39','50.4','140','57.0','1403','1','0','0','0','0','0','2005','10','21','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="岩手山" coords="107,187,114,194" href="../index.php?prec_no=33&block_no=0215&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0215','岩手山','イワテヤマ','39','50.4','140','57.0','1403','1','0','0','0','0','0','2005','10','21','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="岩洞" coords="189,179,220,191" href="../index.php?prec_no=33&block_no=0216&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0216','岩洞','ガンドウ','39','49.5','141','22.5','678','1','0','0','0','0','0','2000','09','30','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="岩洞" coords="192,191,199,198" href="../index.php?prec_no=33&block_no=0216&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0216','岩洞','ガンドウ','39','49.5','141','22.5','678','1','0','0','0','0','0','2000','09','30','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="大森山" coords="229,189,273,201" href="../index.php?prec_no=33&block_no=0217&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0217','大森山','オオモリヤマ','39','49.1','141','31.2','1073','1','0','0','0','0','0','2009','11','02','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="大森山" coords="221,192,228,199" href="../index.php?prec_no=33&block_no=0217&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0217','大森山','オオモリヤマ','39','49.1','141','31.2','1073','1','0','0','0','0','0','2009','11','02','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="岩泉" coords="272,195,301,207" href="../index.php?prec_no=33&block_no=0218&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0218','岩泉','イワイズミ','39','50.8','141','47.7','105','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="岩泉" coords="276,185,283,192" href="../index.php?prec_no=33&block_no=0218&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0218','岩泉','イワイズミ','39','50.8','141','47.7','105','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="駒ケ岳" coords="59,223,100,235" href="../index.php?prec_no=33&block_no=0219&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0219','駒ケ岳','コマガタケ','39','44.0','140','47.5','1003','1','0','0','0','0','0','2005','04','20','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="駒ケ岳" coords="75,214,82,221" href="../index.php?prec_no=33&block_no=0219&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0219','駒ケ岳','コマガタケ','39','44.0','140','47.5','1003','1','0','0','0','0','0','2005','04','20','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="害鷹森" coords="246,217,290,229" href="../index.php?prec_no=33&block_no=0220&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0220','害鷹森','ガイタカモリ','39','42.5','141','36.2','1278','1','0','0','0','0','0','2003','10','21','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="害鷹森" coords="238,220,245,227" href="../index.php?prec_no=33&block_no=0220&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0220','害鷹森','ガイタカモリ','39','42.5','141','36.2','1278','1','0','0','0','0','0','2003','10','21','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="雫石" coords="102,231,131,243" href="../index.php?prec_no=33&block_no=0221&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0221','雫石','シズクイシ','39','41.8','140','58.5','195','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="雫石" coords="112,223,119,230" href="../index.php?prec_no=33&block_no=0221&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0221','雫石','シズクイシ','39','41.8','140','58.5','195','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="盛岡" coords="141,232,170,244" href="../index.php?prec_no=33&block_no=47584&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('s','47584','盛岡','モリオカ','39','41.9','141','09.9','155.2','1','1','1','1','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="盛岡" coords="148,220,159,231" href="../index.php?prec_no=33&block_no=47584&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('s','47584','盛岡','モリオカ','39','41.9','141','09.9','155.2','1','1','1','1','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="宮古" coords="320,232,349,244" href="../index.php?prec_no=33&block_no=47585&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('s','47585','宮古','ミヤコ','39','38.8','141','57.9','42.5','1','1','1','1','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="宮古" coords="308,233,319,244" href="../index.php?prec_no=33&block_no=47585&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('s','47585','宮古','ミヤコ','39','38.8','141','57.9','42.5','1','1','1','1','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="薬師岳" coords="224,262,268,274" href="../index.php?prec_no=33&block_no=0224&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0224','薬師岳','ヤクシダケ','39','31.7','141','29.8','1604','1','0','0','0','0','0','2005','10','20','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="薬師岳" coords="216,265,223,272" href="../index.php?prec_no=33&block_no=0224&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0224','薬師岳','ヤクシダケ','39','31.7','141','29.8','1604','1','0','0','0','0','0','2005','10','20','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="黒森山" coords="59,285,103,297" href="../index.php?prec_no=33&block_no=0225&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0225','黒森山','クロモリヤマ','39','29.7','140','47.5','644','1','0','0','0','0','0','1993','08','01','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="黒森山" coords="75,273,82,280" href="../index.php?prec_no=33&block_no=0225&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0225','黒森山','クロモリヤマ','39','29.7','140','47.5','644','1','0','0','0','0','0','1993','08','01','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="豊沢" coords="119,274,148,286" href="../index.php?prec_no=33&block_no=0226&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0226','豊沢','トヨサワ','39','28.8','140','58.1','300','1','0','0','0','0','0','9999','99','99','1983年11月15日までの地点名「駒頭山」','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="豊沢" coords="111,277,118,284" href="../index.php?prec_no=33&block_no=0226&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0226','豊沢','トヨサワ','39','28.8','140','58.1','300','1','0','0','0','0','0','9999','99','99','1983年11月15日までの地点名「駒頭山」','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="花巻" coords="134,298,163,310" href="../index.php?prec_no=33&block_no=0227&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0227','花巻','ハナマキ','39','25.7','141','08.1','90','1','1','1','0','1','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="花巻" coords="144,290,151,297" href="../index.php?prec_no=33&block_no=0227&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0227','花巻','ハナマキ','39','25.7','141','08.1','90','1','1','1','0','1','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="大迫" coords="183,277,212,289" href="../index.php?prec_no=33&block_no=0228&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0228','大迫','オオハサマ','39','28.2','141','16.7','150','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="大迫" coords="173,279,180,286" href="../index.php?prec_no=33&block_no=0228&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0228','大迫','オオハサマ','39','28.2','141','16.7','150','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="湯田" coords="80,316,109,328" href="../index.php?prec_no=33&block_no=0229&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0229','湯田','ユダ','39','18.6','140','46.6','250','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="湯田" coords="72,319,79,326" href="../index.php?prec_no=33&block_no=0229&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0229','湯田','ユダ','39','18.6','140','46.6','250','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="北上" coords="147,322,176,334" href="../index.php?prec_no=33&block_no=0230&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0230','北上','キタカミ','39','17.3','141','06.6','61','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="北上" coords="139,325,146,332" href="../index.php?prec_no=33&block_no=0230&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0230','北上','キタカミ','39','17.3','141','06.6','61','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="遠野" coords="233,310,262,322" href="../index.php?prec_no=33&block_no=0231&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0231','遠野','トオノ','39','20.3','141','32.6','275','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="遠野" coords="226,312,233,319" href="../index.php?prec_no=33&block_no=0231&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0231','遠野','トオノ','39','20.3','141','32.6','275','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="五葉山" coords="258,350,302,362" href="../index.php?prec_no=33&block_no=0232&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0232','五葉山','ゴヨウサン','39','10.6','141','39.7','560','1','0','0','0','0','0','2009','11','02','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="五葉山" coords="249,353,256,360" href="../index.php?prec_no=33&block_no=0232&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0232','五葉山','ゴヨウサン','39','10.6','141','39.7','560','1','0','0','0','0','0','2009','11','02','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="釜石" coords="301,326,330,338" href="../index.php?prec_no=33&block_no=0233&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0233','釜石','カマイシ','39','16.2','141','52.7','5','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="釜石" coords="293,329,300,336" href="../index.php?prec_no=33&block_no=0233&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0233','釜石','カマイシ','39','16.2','141','52.7','5','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="岳山" coords="61,362,92,374" href="../index.php?prec_no=33&block_no=0234&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0234','岳山','ダケヤマ','39','08.0','140','52.6','973','1','0','0','0','0','0','2005','10','19','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="岳山" coords="92,364,99,371" href="../index.php?prec_no=33&block_no=0234&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0234','岳山','ダケヤマ','39','08.0','140','52.6','973','1','0','0','0','0','0','2005','10','19','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="若柳" coords="138,365,167,377" href="../index.php?prec_no=33&block_no=0235&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0235','若柳','ワカヤナギ','39','08.4','141','03.8','97','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="若柳" coords="130,362,137,369" href="../index.php?prec_no=33&block_no=0235&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0235','若柳','ワカヤナギ','39','08.4','141','03.8','97','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="江刺" coords="157,352,186,364" href="../index.php?prec_no=33&block_no=0236&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0236','江刺','エサシ','39','11.0','141','09.7','42','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="江刺" coords="149,351,156,358" href="../index.php?prec_no=33&block_no=0236&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0236','江刺','エサシ','39','11.0','141','09.7','42','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="大船渡" coords="270,378,311,390" href="../index.php?prec_no=33&block_no=47512&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('s','47512','大船渡','オオフナト','39','03.8','141','42.8','36.9','1','1','1','1','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="大船渡" coords="258,379,269,390" href="../index.php?prec_no=33&block_no=47512&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('s','47512','大船渡','オオフナト','39','03.8','141','42.8','36.9','1','1','1','1','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="一関" coords="150,411,179,423" href="../index.php?prec_no=33&block_no=0238&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0238','一関','イチノセキ','38','56.0','141','07.5','32','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="一関" coords="142,414,149,421" href="../index.php?prec_no=33&block_no=0238&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0238','一関','イチノセキ','38','56.0','141','07.5','32','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="千厩" coords="178,430,207,442" href="../index.php?prec_no=33&block_no=0239&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0239','千厩','センマヤ','38','55.3','141','19.8','120','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="千厩" coords="183,417,190,424" href="../index.php?prec_no=33&block_no=0239&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0239','千厩','センマヤ','38','55.3','141','19.8','120','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="室根山" coords="205,416,249,428" href="../index.php?prec_no=33&block_no=0240&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0240','室根山','ムロネヤマ','38','58.2','141','27.0','883','1','0','0','0','0','0','2005','10','18','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="室根山" coords="207,404,214,411" href="../index.php?prec_no=33&block_no=0240&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','0240','室根山','ムロネヤマ','38','58.2','141','27.0','883','1','0','0','0','0','0','2005','10','18','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="祭畤" coords="80,381,109,393" href="../index.php?prec_no=33&block_no=1028&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1028','祭畤','マツルベ','39','00.7','140','51.9','350','1','0','0','0','1','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="祭畤" coords="90,394,97,401" href="../index.php?prec_no=33&block_no=1028&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1028','祭畤','マツルベ','39','00.7','140','51.9','350','1','0','0','0','1','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="好摩" coords="153,188,182,200" href="../index.php?prec_no=33&block_no=1032&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1032','好摩','コウマ','39','52.1','141','10.0','205','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="好摩" coords="150,180,157,187" href="../index.php?prec_no=33&block_no=1032&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1032','好摩','コウマ','39','52.1','141','10.0','205','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="山田" coords="316,281,345,293" href="../index.php?prec_no=33&block_no=1033&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1033','山田','ヤマダ','39','27.0','141','57.4','24','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="山田" coords="308,284,315,291" href="../index.php?prec_no=33&block_no=1033&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1033','山田','ヤマダ','39','27.0','141','57.4','24','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="大野" coords="258,74,287,86" href="../index.php?prec_no=33&block_no=1037&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1037','大野','オオノ','40','16.9','141','40.0','200','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="大野" coords="250,77,257,84" href="../index.php?prec_no=33&block_no=1037&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1037','大野','オオノ','40','16.9','141','40.0','200','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="衣川" coords="134,381,163,393" href="../index.php?prec_no=33&block_no=1045&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1045','衣川','コロモガワ','39','03.0','141','02.7','75','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="衣川" coords="126,384,133,391" href="../index.php?prec_no=33&block_no=1045&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1045','衣川','コロモガワ','39','03.0','141','02.7','75','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="薮川" coords="191,204,220,216" href="../index.php?prec_no=33&block_no=1078&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1078','薮川','ヤブカワ','39','47.0','141','19.7','680','1','1','1','2','0','1','9999','99','99','2012年5月31日までの地点名「藪川」','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="薮川" coords="183,201,190,208" href="../index.php?prec_no=33&block_no=1078&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1078','薮川','ヤブカワ','39','47.0','141','19.7','680','1','1','1','2','0','1','9999','99','99','2012年5月31日までの地点名「藪川」','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="米里" coords="187,336,216,348" href="../index.php?prec_no=33&block_no=1113&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1113','米里','ヨネサト','39','14.0','141','18.6','170','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="米里" coords="179,339,186,346" href="../index.php?prec_no=33&block_no=1113&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1113','米里','ヨネサト','39','14.0','141','18.6','170','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="沢内" coords="77,247,106,259" href="../index.php?prec_no=33&block_no=1118&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1118','沢内','サワウチ','39','32.9','140','50.6','407','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="沢内" coords="86,260,93,267" href="../index.php?prec_no=33&block_no=1118&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1118','沢内','サワウチ','39','32.9','140','50.6','407','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="荒屋" coords="104,108,133,120" href="../index.php?prec_no=33&block_no=1120&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1120','荒屋','アラヤ','40','06.2','141','03.0','290','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="荒屋" coords="127,121,134,128" href="../index.php?prec_no=33&block_no=1120&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1120','荒屋','アラヤ','40','06.2','141','03.0','290','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="普代" coords="302,143,331,155" href="../index.php?prec_no=33&block_no=1123&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1123','普代','フダイ','40','00.2','141','53.0','8','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="普代" coords="294,146,301,153" href="../index.php?prec_no=33&block_no=1123&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1123','普代','フダイ','40','00.2','141','53.0','8','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="紫波" coords="150,256,179,268" href="../index.php?prec_no=33&block_no=1128&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1128','紫波','シワ','39','32.8','141','07.6','125','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="紫波" coords="142,260,149,267" href="../index.php?prec_no=33&block_no=1128&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1128','紫波','シワ','39','32.8','141','07.6','125','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="葛根田" coords="63,196,104,208" href="../index.php?prec_no=33&block_no=1168&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1168','葛根田','カッコンダ','39','46.6','140','56.7','350','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="葛根田" coords="106,203,113,210" href="../index.php?prec_no=33&block_no=1168&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1168','葛根田','カッコンダ','39','46.6','140','56.7','350','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="住田" coords="223,371,252,383" href="../index.php?prec_no=33&block_no=1206&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1206','住田','スミタ','39','08.5','141','34.4','80','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="住田" coords="232,362,239,369" href="../index.php?prec_no=33&block_no=1206&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1206','住田','スミタ','39','08.5','141','34.4','80','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="小本" coords="316,184,345,196" href="../index.php?prec_no=33&block_no=1212&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1212','小本','オモト','39','50.8','141','57.8','3','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="小本" coords="310,185,317,192" href="../index.php?prec_no=33&block_no=1212&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1212','小本','オモト','39','50.8','141','57.8','3','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="奥中山" coords="160,141,201,153" href="../index.php?prec_no=33&block_no=1215&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1215','奥中山','オクナカヤマ','40','03.6','141','13.5','430','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="奥中山" coords="162,132,169,139" href="../index.php?prec_no=33&block_no=1215&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1215','奥中山','オクナカヤマ','40','03.6','141','13.5','430','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="山形" coords="236,98,265,110" href="../index.php?prec_no=33&block_no=1219&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1219','山形','ヤマガタ','40','08.9','141','34.3','290','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="山形" coords="231,110,238,117" href="../index.php?prec_no=33&block_no=1219&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1219','山形','ヤマガタ','40','08.9','141','34.3','290','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="川井" coords="260,247,289,259" href="../index.php?prec_no=33&block_no=1224&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1224','川井','カワイ','39','35.9','141','40.9','192','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="川井" coords="253,247,260,254" href="../index.php?prec_no=33&block_no=1224&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1224','川井','カワイ','39','35.9','141','40.9','192','1','1','1','2','0','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="門馬" coords="212,243,243,255" href="../index.php?prec_no=33&block_no=1225&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1225','門馬','カドマ','39','38.0','141','26.2','620','1','1','1','1','0','0','1993','10','07','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="門馬" coords="204,239,211,246" href="../index.php?prec_no=33&block_no=1225&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1225','門馬','カドマ','39','38.0','141','26.2','620','1','1','1','1','0','0','1993','10','07','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="下戸鎖" coords="267,125,308,137" href="../index.php?prec_no=33&block_no=1332&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1332','下戸鎖','シモトクサリ','40','05.1','141','42.7','232','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="下戸鎖" coords="259,126,266,133" href="../index.php?prec_no=33&block_no=1332&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1332','下戸鎖','シモトクサリ','40','05.1','141','42.7','232','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="区界" coords="192,222,221,234" href="../index.php?prec_no=33&block_no=1447&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1447','区界','クザカイ','39','39.0','141','21.2','734','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="区界" coords="188,234,195,241" href="../index.php?prec_no=33&block_no=1447&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1447','区界','クザカイ','39','39.0','141','21.2','734','1','1','1','2','1','1','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="大槌" coords="271,273,300,285" href="../index.php?prec_no=33&block_no=1508&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1508','大槌','オオツチ','39','26.3','141','48.4','120','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="大槌" coords="278,287,285,294" href="../index.php?prec_no=33&block_no=1508&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1508','大槌','オオツチ','39','26.3','141','48.4','120','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="大東" coords="184,384,213,396" href="../index.php?prec_no=33&block_no=1557&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1557','大東','ダイトウ','39','02.3','141','17.8','140','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="大東" coords="176,387,183,394" href="../index.php?prec_no=33&block_no=1557&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1557','大東','ダイトウ','39','02.3','141','17.8','140','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="金ケ崎" coords="82,340,120,352" href="../index.php?prec_no=33&block_no=1558&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1558','金ケ崎','カネガサキ','39','13.5','141','00.9','170','1','0','0','0','0','0','9999','99','99','2009年12月31日までの地点名「金ヶ崎」','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="金ケ崎" coords="120,341,127,348" href="../index.php?prec_no=33&block_no=1558&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1558','金ケ崎','カネガサキ','39','13.5','141','00.9','170','1','0','0','0','0','0','9999','99','99','2009年12月31日までの地点名「金ヶ崎」','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="滝沢" coords="144,203,173,215" href="../index.php?prec_no=33&block_no=1560&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1560','滝沢','タキザワ','39','46.8','141','05.8','210','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="滝沢" coords="136,202,143,209" href="../index.php?prec_no=33&block_no=1560&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1560','滝沢','タキザワ','39','46.8','141','05.8','210','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="附馬牛" coords="226,285,267,297" href="../index.php?prec_no=33&block_no=1563&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1563','附馬牛','ツキモウシ','39','27.4','141','30.4','440','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="附馬牛" coords="218,283,225,290" href="../index.php?prec_no=33&block_no=1563&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1563','附馬牛','ツキモウシ','39','27.4','141','30.4','440','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="秋田県" coords="15,111,67,126" href="prefecture.php?prec_no=32&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="青森県" coords="139,36,191,51" href="prefecture.php?prec_no=31&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="山形県" coords="4,462,56,477" href="prefecture.php?prec_no=35&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="宮城県" coords="99,466,151,481" href="prefecture.php?prec_no=34&block_no=&year=&month=&day=&view=">
+<area shape="rect" alt="岩手県全地点" coords="10,10,109,27" href="../index.php?prec_no=33&block_no=00&year=&month=&day=&view=">
+<area shape="rect" alt="厳美" coords="107,398,138,410" href="../index.php?prec_no=33&block_no=1598&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1598','厳美','ゲンビ','38','59.0','140','54.7','230','1','0','0','0','0','0','2008','09','02','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="厳美" coords="99,401,106,408" href="../index.php?prec_no=33&block_no=1598&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1598','厳美','ゲンビ','38','59.0','140','54.7','230','1','0','0','0','0','0','2008','09','02','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="刈屋" coords="280,234,311,246" href="../index.php?prec_no=33&block_no=1627&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1627','刈屋','カリヤ','39','38.5','141','46.4','140','1','0','0','0','0','0','2021','12','07','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="刈屋" coords="272,237,279,244" href="../index.php?prec_no=33&block_no=1627&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1627','刈屋','カリヤ','39','38.5','141','46.4','140','1','0','0','0','0','0','2021','12','07','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="新町" coords="307,305,338,317" href="../index.php?prec_no=33&block_no=1628&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1628','新町','シンチョウ','39','21.6','141','54.3','4','1','1','1','0','0','0','2021','12','07','2014年5月28日までの地点名「小鎚」','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="新町" coords="298,307,305,314" href="../index.php?prec_no=33&block_no=1628&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1628','新町','シンチョウ','39','21.6','141','54.3','4','1','1','1','0','0','0','2021','12','07','2014年5月28日までの地点名「小鎚」','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="陸前高田" coords="248,397,305,409" href="../index.php?prec_no=33&block_no=1629&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1629','陸前高田','リクゼンタカタ','39','01.5','141','37.8','61','1','1','1','0','0','0','2021','12','07','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="陸前高田" coords="243,391,250,398" href="../index.php?prec_no=33&block_no=1629&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1629','陸前高田','リクゼンタカタ','39','01.5','141','37.8','61','1','1','1','0','0','0','2021','12','07','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="一方井" coords="155,162,196,174" href="../index.php?prec_no=33&block_no=1653&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1653','一方井','イッカタイ','39','58.4','141','10.0','285','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+<area shape="rect" alt="一方井" coords="150,154,157,161" href="../index.php?prec_no=33&block_no=1653&year=&month=&day=&view=" 
+onmouseover="javascript:viewPoint('a','1653','一方井','イッカタイ','39','58.4','141','10.0','285','1','0','0','0','0','0','9999','99','99','','','','','');" onmouseout="javascript:initPoint();">
+</map>
+<br><ul class="pagelink mtx"><li><A href="../../data/mdrr/man/first.html">利用される方へ</A></li></ul><br>
+<!-- //contents -->
+
+<p class="totop"><a href="#nheader">このページのトップへ</a></p>
+</div>
+</div>
+
+<div id="footer_area"><div id="nfooter"><ul><li><a href="//www.jma.go.jp/jma/kishou/info/coment.html">気象庁ホームページについて</a></li></ul></div></div></body>
+</html>
