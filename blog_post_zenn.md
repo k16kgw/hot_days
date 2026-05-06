@@ -439,5 +439,8 @@ open reports/hot_days_report.md
 
 # おわりに
 
+千葉県勝浦のほかにここ10年間で猛暑日を記録しなかった地域には、北海道などの北の地域を除き、人の住める範囲では福島県飯館、栃木県日光、長野県軽井沢、長崎県平戸などがあった。
+避暑を目的に移住を検討する場合に参考にしていただければ幸いである。
+データ分析結果は[https://seminar.k16kgw.com/hobbies/hot_days/](https://seminar.k16kgw.com/hobbies/hot_days/)から、日本地図にプロットした結果は[https://seminar.k16kgw.com/hobbies/hot_days/hot_days_map.html](https://seminar.k16kgw.com/hobbies/hot_days/hot_days_map.html)から見れるようにしたのでご覧あれ。
 
 なお、このPythonによるwebスクレイピング・データ処理・可視化のパイプラインは他の気象指標（熱帯夜数、降水量など）にも応用できる。
