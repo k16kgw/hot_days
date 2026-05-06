@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全国猛暑日マップ 2016–2025</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --border: #2a2d3a;
+      --accent: #e85c2c;
+      --accent2: #f5a623;
+      --text: #e8e8f0;
+      --muted: #8a8aa0;
+      --radius: 10px;
+    }
+
+    body {
+      font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #1a1d27 0%, #0f1117 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 2rem 2.5rem;
+      text-align: center;
+    }
+    header .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      padding: .25rem .75rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+    header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -.01em;
+      margin-bottom: .5rem;
+    }
+    header h1 span { color: var(--accent); }
+    header p.sub {
+      color: var(--muted);
+      font-size: .95rem;
+      margin-bottom: 1.5rem;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      padding: .75rem 2rem;
+      border-radius: var(--radius);
+      transition: opacity .15s;
+    }
+    .cta-btn:hover { opacity: .85; }
+
+    /* ── Main layout ── */
+    main {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    section { margin-bottom: 4rem; }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    /* ── Stat cards ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+    }
+    .stat-card .label { font-size: .8rem; color: var(--muted); margin-bottom: .35rem; }
+    .stat-card .value { font-size: 1.8rem; font-weight: 800; color: var(--accent2); }
+    .stat-card .sub   { font-size: .8rem; color: var(--muted); margin-top: .25rem; }
+
+    /* ── Map embed ── */
+    .map-frame {
+      width: 100%;
+      height: 580px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .map-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .map-caption {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-top: .6rem;
+      text-align: center;
+    }
+
+    /* ── Figures ── */
+    .fig-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .fig-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .fig-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #fff;
+    }
+    .fig-card .fig-title {
+      padding: .75rem 1rem;
+      font-size: .85rem;
+      color: var(--muted);
+    }
+
+    /* ── Ranking table ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .9rem;
+    }
+    th {
+      background: var(--surface);
+      color: var(--muted);
+      font-weight: 600;
+      text-align: left;
+      padding: .65rem .9rem;
+      border-bottom: 2px solid var(--border);
+    }
+    td {
+      padding: .6rem .9rem;
+      border-bottom: 1px solid var(--border);
+    }
+    tr:hover td { background: rgba(255,255,255,.03); }
+    .rank { font-weight: 800; color: var(--accent2); min-width: 2rem; }
+    .days { font-weight: 700; color: var(--accent); }
+
+    /* ── Zero-hot section ── */
+    .zero-cats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .zero-cat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.25rem;
+    }
+    .zero-cat h3 { font-size: .95rem; margin-bottom: .35rem; color: var(--accent2); }
+    .zero-cat p  { font-size: .82rem; color: var(--muted); }
+    .zero-cat .count { font-size: 1.5rem; font-weight: 800; color: var(--text); }
+
+    .notable-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+    .notable-list span {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .3rem .8rem;
+      font-size: .82rem;
+      color: var(--muted);
+    }
+    .notable-list span b { color: var(--text); }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+    footer a { color: var(--muted); text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">JMA Open Data · 2016–2025</div>
+  <h1>全国<span>猛暑日</span>マップ</h1>
+  <p class="sub">気象庁データで見る10年間の猛暑日（最高気温35°C以上）の分布と変化</p>
+  <a class="cta-btn" href="hot_days_map.html" target="_blank">インタラクティブマップを開く →</a>
+</header>
+
+<main>
+
+  <!-- ── Key stats ── -->
+  <section>
+    <h2>主要指標（2016–2025年）</h2>
+    <div class="stats">
+      <div class="stat-card">
+        <div class="label">全国平均・2025年</div>
+        <div class="value">11.3<small style="font-size:1rem">日</small></div>
+        <div class="sub">2016年比 約3.5倍</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">最多猛暑日（年平均）</div>
+        <div class="value">35.3<small style="font-size:1rem">日</small></div>
+        <div class="sub">日田（大分県）</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">猛暑日ゼロの地点</div>
+        <div class="value">153<small style="font-size:1rem">か所</small></div>
+        <div class="sub">10年間一度も記録なし</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">集計対象地点数</div>
+        <div class="value">1,321</div>
+        <div class="sub">気象官署 + AMeDAS</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Map ── -->
+  <section>
+    <h2>全国インタラクティブマップ</h2>
+    <div class="map-frame">
+      <iframe src="hot_days_map.html" title="全国猛暑日マップ"></iframe>
+    </div>
+    <p class="map-caption">
+      円の大きさ＝10年間の平均猛暑日数。クリックで地点名・平均日数を表示。<br>
+      別タブで開くと操作しやすい → <a href="hot_days_map.html" target="_blank" style="color:var(--accent2)">マップを全画面で開く</a>
+    </p>
+  </section>
+
+  <!-- ── Trend & figures ── -->
+  <section>
+    <h2>グラフ</h2>
+    <div class="fig-grid">
+      <div class="fig-card">
+        <img src="figures/national_trend.png" alt="全国年別猛暑日数の推移" loading="lazy">
+        <div class="fig-title">全国年別猛暑日数の推移（観測点あたり平均）</div>
+      </div>
+      <div class="fig-card">
+        <img src="figures/top_stations.png" alt="猛暑日数ランキング（上位20地点）" loading="lazy">
+        <div class="fig-title">猛暑日数ランキング（上位20地点・10年平均）</div>
+      </div>
+      <div class="fig-card" style="grid-column: 1 / -1;">
+        <img src="figures/prefecture_summary.png" alt="都道府県別猛暑日数" loading="lazy">
+        <div class="fig-title">都道府県別猛暑日数サマリー</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Ranking ── -->
+  <section>
+    <h2>猛暑日数ランキング TOP 10（10年平均）</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>地点</th>
+          <th>都道府県</th>
+          <th>年平均</th>
+          <th>最大値</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="rank">1</td><td>日田</td><td>大分県</td><td class="days">35.3日</td><td>62日</td></tr>
+        <tr><td class="rank">2</td><td>多治見</td><td>岐阜県</td><td class="days">34.0日</td><td>59日</td></tr>
+        <tr><td class="rank">3</td><td>京都</td><td>京都府</td><td class="days">32.8日</td><td>61日</td></tr>
+        <tr><td class="rank">4</td><td>久留米</td><td>福岡県</td><td class="days">30.9日</td><td>54日</td></tr>
+        <tr><td class="rank">5</td><td>鳩山</td><td>埼玉県</td><td class="days">30.4日</td><td>51日</td></tr>
+        <tr><td class="rank">6</td><td>豊田</td><td>愛知県</td><td class="days">30.2日</td><td>57日</td></tr>
+        <tr><td class="rank">7</td><td>太宰府</td><td>福岡県</td><td class="days">30.1日</td><td>62日</td></tr>
+        <tr><td class="rank">8</td><td>館林</td><td>群馬県</td><td class="days">30.0日</td><td>54日</td></tr>
+        <tr><td class="rank">9</td><td>枚方</td><td>大阪府</td><td class="days">29.4日</td><td>51日</td></tr>
+        <tr><td class="rank">10</td><td>桐生</td><td>群馬県</td><td class="days">29.2日</td><td>58日</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── Zero hot-day ── -->
+  <section>
+    <h2>猛暑日ゼロの地点（153か所）</h2>
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:1.25rem;">
+      2016〜2025年の10年間で一度も35°Cを超えなかった観測地点。北海道・高原・沿海・離島の4タイプに分類できる。
+    </p>
+    <div class="zero-cats">
+      <div class="zero-cat">
+        <h3>北海道</h3>
+        <div class="count">73</div>
+        <p>道東・沿岸は夏の海霧（やませ）で冷却。胆振・釧路地方は全地点がゼロ。</p>
+      </div>
+      <div class="zero-cat">
+        <h3>沿海・離島</h3>
+        <div class="count">29</div>
+        <p>宮古島・南大東島（沖縄）、勝浦（千葉）、父島・三宅島（東京）など。海洋性気候が最高気温を抑制。</p>
+      </div>
+      <div class="zero-cat">
+        <h3>高原・山岳</h3>
+        <div class="count">24</div>
+        <p>富士山・軽井沢・草津・野辺山・奥日光・阿蘇山など。標高が最大の防護壁。</p>
+      </div>
+      <div class="zero-cat">
+        <h3>東北・山間部</h3>
+        <div class="count">24</div>
+        <p>酸ケ湯（青森）・薮川（岩手）・桧枝岐（福島）など。北方冷涼帯と地形の複合効果。</p>
+      </div>
+    </div>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:.75rem;">代表的な「涼しい地点」：</p>
+    <div class="notable-list">
+      <span><b>稚内</b>・宗谷</span>
+      <span><b>釧路</b>・釧路地方</span>
+      <span><b>根室</b>・根室地方</span>
+      <span><b>室蘭</b>・胆振</span>
+      <span><b>苫小牧</b>・胆振</span>
+      <span><b>えりも岬</b>・日高</span>
+      <span><b>軽井沢</b>・長野</span>
+      <span><b>野辺山</b>・長野</span>
+      <span><b>草津</b>・群馬</span>
+      <span><b>菅平</b>・長野</span>
+      <span><b>奥日光</b>・栃木</span>
+      <span><b>那須高原</b>・栃木</span>
+      <span><b>勝浦</b>・千葉</span>
+      <span><b>富士山</b>・山梨/静岡</span>
+      <span><b>父島</b>・東京</span>
+      <span><b>宮古島</b>・沖縄</span>
+      <span><b>南大東島</b>・沖縄</span>
+      <span><b>酸ケ湯</b>・青森</span>
+      <span><b>薮川</b>・岩手</span>
+      <span><b>桧枝岐</b>・福島</span>
+      <span><b>室戸岬</b>・高知</span>
+      <span><b>雲仙岳</b>・長崎</span>
+      <span><b>昭和基地</b>・南極</span>
+    </div>
+  </section>
+
+  <!-- ── About ── -->
+  <section>
+    <h2>このデータについて</h2>
+    <table>
+      <tbody>
+        <tr><td style="color:var(--muted);width:9rem">データソース</td><td>気象庁 過去の気象データ（data.jma.go.jp/obd/stats/etrn/）</td></tr>
+        <tr><td style="color:var(--muted)">対象期間</td><td>2016〜2025年（10か年）</td></tr>
+        <tr><td style="color:var(--muted)">対象地点</td><td>気象官署（有人）約160点 ＋ AMeDAS（自動）約1,519点</td></tr>
+        <tr><td style="color:var(--muted)">猛暑日</td><td>日最高気温 35°C以上（気象庁公式定義）</td></tr>
+        <tr><td style="color:var(--muted)">解析ツール</td><td>Python（httpx, BeautifulSoup4, pandas, Folium, matplotlib）</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<footer>
+  <p>データソース：<a href="https://www.data.jma.go.jp/obd/stats/etrn/" target="_blank">気象庁 過去の気象データ検索</a>　|　解析・制作：komachan</p>
+  <p style="margin-top:.5rem">本サイトは気象庁の公開データを加工・集計したものです。</p>
+</footer>
+
+</body>
+</html>
